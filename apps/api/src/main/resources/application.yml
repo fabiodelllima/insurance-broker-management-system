@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: ibms-api
+
+  # ---- PostgreSQL ----
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ibms}
+    username: ${SPRING_DATASOURCE_USERNAME:ibms}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  # ---- Redis ----
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+      password: ${SPRING_REDIS_PASSWORD:}
+
+  # ---- RabbitMQ ----
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:ibms}
+    password: ${SPRING_RABBITMQ_PASSWORD:}
+
+  # ---- Security ----
+  security:
+    user:
+      name: admin
+      password: ${SPRING_SECURITY_PASSWORD:admin}
+
+# ---- Actuator ----
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# ---- Server ----
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
