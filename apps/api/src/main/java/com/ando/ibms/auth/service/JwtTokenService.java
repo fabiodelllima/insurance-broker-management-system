@@ -1,16 +1,19 @@
 package com.ando.ibms.auth.service;
 
 import com.ando.ibms.common.config.JwtProperties;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
+
+import javax.crypto.SecretKey;
 
 @Service
 public class JwtTokenService {
@@ -20,9 +23,8 @@ public class JwtTokenService {
     private final long refreshExpirationMs;
 
     public JwtTokenService(JwtProperties properties) {
-        this.signingKey = Keys.hmacShaKeyFor(
-            properties.getSecret().getBytes(StandardCharsets.UTF_8)
-        );
+        this.signingKey =
+                Keys.hmacShaKeyFor(properties.getSecret().getBytes(StandardCharsets.UTF_8));
         this.expirationMs = properties.getExpirationMs();
         this.refreshExpirationMs = properties.getRefreshExpirationMs();
     }
@@ -36,11 +38,7 @@ public class JwtTokenService {
     }
 
     public Claims parseToken(String token) {
-        return Jwts.parser()
-            .verifyWith(signingKey)
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
+        return Jwts.parser().verifyWith(signingKey).build().parseSignedClaims(token).getPayload();
     }
 
     public boolean isTokenValid(String token) {
@@ -69,12 +67,12 @@ public class JwtTokenService {
         Date expiry = new Date(now.getTime() + ttlMs);
 
         return Jwts.builder()
-            .subject(userId.toString())
-            .claim("email", email)
-            .claim("role", role)
-            .issuedAt(now)
-            .expiration(expiry)
-            .signWith(signingKey)
-            .compact();
+                .subject(userId.toString())
+                .claim("email", email)
+                .claim("role", role)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(signingKey)
+                .compact();
     }
 }

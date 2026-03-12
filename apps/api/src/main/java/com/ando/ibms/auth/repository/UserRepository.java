@@ -1,6 +1,7 @@
 package com.ando.ibms.auth.repository;
 
 import com.ando.ibms.auth.model.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

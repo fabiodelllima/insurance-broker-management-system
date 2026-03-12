@@ -6,6 +6,7 @@ import com.ando.ibms.auth.dto.RefreshRequest;
 import com.ando.ibms.auth.model.User;
 import com.ando.ibms.auth.repository.UserRepository;
 import com.ando.ibms.common.config.JwtProperties;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -19,10 +20,11 @@ public class AuthService {
     private final JwtTokenService jwtTokenService;
     private final JwtProperties jwtProperties;
 
-    public AuthService(AuthenticationManager authenticationManager,
-                       UserRepository userRepository,
-                       JwtTokenService jwtTokenService,
-                       JwtProperties jwtProperties) {
+    public AuthService(
+            AuthenticationManager authenticationManager,
+            UserRepository userRepository,
+            JwtTokenService jwtTokenService,
+            JwtProperties jwtProperties) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.jwtTokenService = jwtTokenService;
@@ -31,18 +33,19 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.email(), request.password())
-        );
+                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
-        User user = userRepository.findByEmail(request.email())
-            .orElseThrow(() -> new AuthenticationException("User not found") {});
+        User user =
+                userRepository
+                        .findByEmail(request.email())
+                        .orElseThrow(() -> new AuthenticationException("User not found") {});
 
-        String accessToken = jwtTokenService.generateAccessToken(
-            user.getId(), user.getEmail(), user.getRole().name()
-        );
-        String refreshToken = jwtTokenService.generateRefreshToken(
-            user.getId(), user.getEmail(), user.getRole().name()
-        );
+        String accessToken =
+                jwtTokenService.generateAccessToken(
+                        user.getId(), user.getEmail(), user.getRole().name());
+        String refreshToken =
+                jwtTokenService.generateRefreshToken(
+                        user.getId(), user.getEmail(), user.getRole().name());
 
         return new AuthResponse(accessToken, refreshToken, jwtProperties.getExpirationMs());
     }
@@ -55,12 +58,14 @@ public class AuthService {
         }
 
         String email = jwtTokenService.extractEmail(token);
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user =
+                userRepository
+                        .findByEmail(email)
+                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        String accessToken = jwtTokenService.generateAccessToken(
-            user.getId(), user.getEmail(), user.getRole().name()
-        );
+        String accessToken =
+                jwtTokenService.generateAccessToken(
+                        user.getId(), user.getEmail(), user.getRole().name());
 
         return new AuthResponse(accessToken, token, jwtProperties.getExpirationMs());
     }

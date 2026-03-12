@@ -32,20 +32,30 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
-        Map<String, String> fields = ex.getBindingResult().getFieldErrors().stream()
-            .collect(Collectors.toMap(
-                FieldError::getField,
-                fe -> fe.getDefaultMessage() != null ? fe.getDefaultMessage() : "Invalid value",
-                (a, b) -> a
-            ));
+    public ResponseEntity<Map<String, Object>> handleValidation(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> fields =
+                ex.getBindingResult().getFieldErrors().stream()
+                        .collect(
+                                Collectors.toMap(
+                                        FieldError::getField,
+                                        fe ->
+                                                fe.getDefaultMessage() != null
+                                                        ? fe.getDefaultMessage()
+                                                        : "Invalid value",
+                                        (a, b) -> a));
 
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of(
-            "timestamp", Instant.now().toString(),
-            "status", HttpStatus.UNPROCESSABLE_ENTITY.value(),
-            "error", "Validation failed",
-            "fields", fields
-        ));
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(
+                        Map.of(
+                                "timestamp",
+                                Instant.now().toString(),
+                                "status",
+                                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                                "error",
+                                "Validation failed",
+                                "fields",
+                                fields));
     }
 
     @ExceptionHandler(Exception.class)
@@ -54,11 +64,12 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<Map<String, Object>> error(HttpStatus status, String message) {
-        return ResponseEntity.status(status).body(Map.of(
-            "timestamp", Instant.now().toString(),
-            "status", status.value(),
-            "error", status.getReasonPhrase(),
-            "message", message
-        ));
+        return ResponseEntity.status(status)
+                .body(
+                        Map.of(
+                                "timestamp", Instant.now().toString(),
+                                "status", status.value(),
+                                "error", status.getReasonPhrase(),
+                                "message", message));
     }
 }
