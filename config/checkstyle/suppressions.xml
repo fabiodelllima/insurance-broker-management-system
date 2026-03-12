@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!--
+        Formatting rules handled by google-java-format.
+        Keeping them active would cause false positives where the
+        formatter and Checkstyle disagree on wrapping/indentation.
+    -->
+    <suppress checks="Indentation" />
+    <suppress checks="LineLength" />
+    <suppress checks="CustomImportOrder" />
+</suppressions>
