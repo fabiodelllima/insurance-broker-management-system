@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# pre-commit: auto-format + checkstyle before each commit.
+# To bypass (emergency only): git commit --no-verify
+
+set -euo pipefail
+
+API_DIR="apps/api"
+MVNW="$API_DIR/mvnw"
+
+if [ ! -x "$MVNW" ]; then
+    echo "[ERROR] Maven wrapper not found at $MVNW"
+    exit 1
+fi
+
+echo "[pre-commit] Auto-formatting (google-java-format)..."
+$MVNW -f "$API_DIR/pom.xml" com.spotify.fmt:fmt-maven-plugin:format -q 2>&1
+
+# Re-stage any files that were reformatted
+CHANGED=$(git diff --name-only -- '*.java')
+if [ -n "$CHANGED" ]; then
+    echo "$CHANGED" | xargs git add
+    echo "[pre-commit] Reformatted and re-staged: $(echo "$CHANGED" | wc -l) file(s)"
+fi
+
+echo "[pre-commit] Checking code style (Checkstyle)..."
+$MVNW -f "$API_DIR/pom.xml" checkstyle:check -q 2>&1 || {
+    echo ""
+    echo "[FAIL] Checkstyle violations found. See output above."
+    exit 1
+}
+
+echo "[pre-commit] OK"

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# pre-push: full verification before pushing to remote.
+# To bypass (emergency only): git push --no-verify
+
+set -euo pipefail
+
+API_DIR="apps/api"
+MVNW="$API_DIR/mvnw"
+
+if [ ! -x "$MVNW" ]; then
+    echo "[ERROR] Maven wrapper not found at $MVNW"
+    exit 1
+fi
+
+echo "[pre-push] Running full verification (compile + test + spotbugs)..."
+$MVNW -f "$API_DIR/pom.xml" verify -q 2>&1 || {
+    echo ""
+    echo "[FAIL] Verification failed. Fix the issues before pushing."
+    exit 1
+}
+
+echo "[pre-push] OK"
