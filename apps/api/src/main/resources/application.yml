@@ -10,7 +10,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     open-in-view: false
     properties:
       hibernate:
@@ -31,11 +31,13 @@ spring:
     username: ${SPRING_RABBITMQ_USERNAME:ibms}
     password: ${SPRING_RABBITMQ_PASSWORD:}
 
-  # ---- Security ----
-  security:
-    user:
-      name: admin
-      password: ${SPRING_SECURITY_PASSWORD:admin}
+
+# ---- JWT ----
+security:
+  jwt:
+    secret: ${JWT_SECRET:3f8a2b1c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1}
+    expiration-ms: ${JWT_EXPIRATION_MS:900000}
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
 
 # ---- Actuator ----
 management:
