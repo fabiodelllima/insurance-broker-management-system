@@ -1,6 +1,6 @@
 # IBMS — Project Roadmap
 
-- **Last updated:** 2026-03-10
+- **Last updated:** 2026-03-13
 - **Current phase:** MVP
 - **Repository:** insurance-broker-management-system
 

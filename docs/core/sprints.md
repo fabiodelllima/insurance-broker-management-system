@@ -1,6 +1,6 @@
 # IBMS — Sprint Planning
 
-- **Last updated:** 2026-03-10
+- **Last updated:** 2026-03-13
 - **Sprint duration:** 2 weeks
 - **Methodology:** Gitflow — feature branches per story, merged into `develop` via PR
 
@@ -15,6 +15,9 @@
 - [x] SecurityConfig (JWT skeleton)
 - [x] GlobalExceptionHandler
 - [x] HealthCheckController
+- [x] Static analysis toolchain (google-java-format, Checkstyle, SpotBugs) — ADR-002
+- [x] Git hooks (pre-commit formatting, pre-push verify)
+- [x] EditorConfig
 - [ ] Angular scaffold — Sprint 7
 - [ ] OCI account — Infrastructure Track
 
@@ -26,6 +29,9 @@
 **Goal:** Fully operational JWT authentication. All subsequent API endpoints depend on this.
 
 ### Stories
+
+- [ ] **S1-00 — Test infrastructure enablement**
+      Configure `IbmsApiApplicationTests` to use Testcontainers (PostgreSQL) so that `./mvnw verify` passes without an external database. Create `application-test.yml` profile if needed. Adjust pre-push hook to account for Docker requirement or skip integration tests locally and rely on CI.
 
 - [ ] **S1-01 — User entity and repository**
       Create the `User` JPA entity with fields `id`, `email`, `password` (BCrypt), `role`, `createdAt`, `updatedAt`. Implement `UserRepository` extending `JpaRepository`. Write unit tests for repository layer.
