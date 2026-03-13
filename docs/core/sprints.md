@@ -42,7 +42,7 @@
 - [x] **S1-03 — JWT filter and security chain**
       Implement `JwtAuthenticationFilter` extending `OncePerRequestFilter`. Wire it into `SecurityConfig` to validate tokens on every request. Public routes: `/actuator/health`, `/api/v1/auth/**`.
 
-- [ ] **S1-04 — Login endpoint**
+- [x] **S1-04 — Login endpoint**
       Implement `POST /api/v1/auth/login` accepting `{ email, password }`. Returns `{ accessToken, refreshToken, expiresIn }`. Write integration test using `@SpringBootTest` and `MockMvc`.
 
 - [ ] **S1-05 — Refresh token endpoint**
