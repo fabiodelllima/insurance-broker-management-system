@@ -1,6 +1,6 @@
 # IBMS — Sprint Planning
 
-- **Last updated:** 2026-03-10
+- **Last updated:** 2026-03-13
 - **Sprint duration:** 2 weeks
 - **Methodology:** Gitflow — feature branches per story, merged into `develop` via PR
 
@@ -15,6 +15,9 @@
 - [x] SecurityConfig (JWT skeleton)
 - [x] GlobalExceptionHandler
 - [x] HealthCheckController
+- [x] Static analysis toolchain (google-java-format, Checkstyle, SpotBugs) — ADR-002
+- [x] Git hooks (pre-commit formatting, pre-push verify)
+- [x] EditorConfig
 - [ ] Angular scaffold — Sprint 7
 - [ ] OCI account — Infrastructure Track
 
@@ -27,29 +30,32 @@
 
 ### Stories
 
-- [ ] **S1-01 — User entity and repository**
+- [x] **S1-00 — Test infrastructure enablement**
+      Configure `IbmsApiApplicationTests` to use Testcontainers (PostgreSQL) so that `./mvnw verify` passes without an external database. Create `application-test.yml` profile if needed. Adjust pre-push hook to account for Docker requirement or skip integration tests locally and rely on CI.
+
+- [x] **S1-01 — User entity and repository**
       Create the `User` JPA entity with fields `id`, `email`, `password` (BCrypt), `role`, `createdAt`, `updatedAt`. Implement `UserRepository` extending `JpaRepository`. Write unit tests for repository layer.
 
-- [ ] **S1-02 — JWT token service**
+- [x] **S1-02 — JWT token service**
       Implement `JwtTokenService` responsible for token generation, parsing, and validation. Token claims must include `sub` (user ID), `email`, `role`, and `exp`. Externalize secret and expiration via `application.yml` environment variables.
 
-- [ ] **S1-03 — JWT filter and security chain**
+- [x] **S1-03 — JWT filter and security chain**
       Implement `JwtAuthenticationFilter` extending `OncePerRequestFilter`. Wire it into `SecurityConfig` to validate tokens on every request. Public routes: `/actuator/health`, `/api/v1/auth/**`.
 
-- [ ] **S1-04 — Login endpoint**
+- [x] **S1-04 — Login endpoint**
       Implement `POST /api/v1/auth/login` accepting `{ email, password }`. Returns `{ accessToken, refreshToken, expiresIn }`. Write integration test using `@SpringBootTest` and `MockMvc`.
 
-- [ ] **S1-05 — Refresh token endpoint**
+- [x] **S1-05 — Refresh token endpoint**
       Implement `POST /api/v1/auth/refresh` accepting `{ refreshToken }`. Returns new `accessToken`. Persist refresh tokens in Redis with TTL.
 
-- [ ] **S1-06 — Logout endpoint**
+- [x] **S1-06 — Logout endpoint**
       Implement `POST /api/v1/auth/logout`. Invalidate refresh token in Redis. Return `204 No Content`.
 
 ### Acceptance Criteria
 
-- [ ] All endpoints return correct HTTP status codes for valid and invalid inputs
-- [ ] Invalid credentials return `401`, expired tokens return `401`, missing token returns `401`
-- [ ] Integration tests pass for all happy paths and primary error scenarios
+- [x] All endpoints return correct HTTP status codes for valid and invalid inputs
+- [x] Invalid credentials return `401`, expired tokens return `401`, missing token returns `401`
+- [x] Integration tests pass for all happy paths and primary error scenarios
 - [ ] No secrets hardcoded — all via environment variables
 
 ---
@@ -83,9 +89,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Authenticated requests only (`Authorization: Bearer <token>`)
-- [ ] Pagination defaults: `page=0`, `size=20`, sorted by `name` ASC
-- [ ] Soft delete — records are never physically removed
+- [x] Authenticated requests only (`Authorization: Bearer <token>`)
+- [x] Pagination defaults: `page=0`, `size=20`, sorted by `name` ASC
+- [x] Soft delete — records are never physically removed
 - [ ] CNPJ validation on create and update
 
 ---
@@ -121,9 +127,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Invalid status transitions return `409 Conflict` with descriptive message
-- [ ] Policy cannot be created without an existing active broker
-- [ ] All date fields use ISO 8601 format
+- [x] Invalid status transitions return `409 Conflict` with descriptive message
+- [x] Policy cannot be created without an existing active broker
+- [x] All date fields use ISO 8601 format
 
 ---
 
@@ -148,9 +154,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Quote conversion is atomic (transactional)
-- [ ] Expired quotes (`validUntil` in the past) cannot be accepted
-- [ ] Converted quotes are immutable
+- [x] Quote conversion is atomic (transactional)
+- [x] Expired quotes (`validUntil` in the past) cannot be accepted
+- [x] Converted quotes are immutable
 
 ---
 
@@ -181,9 +187,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Claims can only be opened against `ACTIVE` policies
-- [ ] `finalValue` is required when closing an approved claim
-- [ ] Document storage abstracted behind an interface for future OCI migration
+- [x] Claims can only be opened against `ACTIVE` policies
+- [x] `finalValue` is required when closing an approved claim
+- [x] Document storage abstracted behind an interface for future OCI migration
 
 ---
 
@@ -211,9 +217,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Notification failures never affect the originating transaction
-- [ ] All credentials externalized via environment variables
-- [ ] Dead letter stream inspectable via admin endpoint
+- [x] Notification failures never affect the originating transaction
+- [x] All credentials externalized via environment variables
+- [x] Dead letter stream inspectable via admin endpoint
 
 ---
 
@@ -238,9 +244,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Login with valid credentials navigates to dashboard
-- [ ] Login with invalid credentials shows error message
-- [ ] Protected routes redirect unauthenticated users to login
+- [x] Login with valid credentials navigates to dashboard
+- [x] Login with invalid credentials shows error message
+- [x] Protected routes redirect unauthenticated users to login
 - [ ] Token refresh is transparent to the user
 
 ---

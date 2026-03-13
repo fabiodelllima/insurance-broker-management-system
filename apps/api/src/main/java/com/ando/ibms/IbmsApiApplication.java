@@ -3,10 +3,12 @@ package com.ando.ibms;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/** Entry point for the IBMS API application. */
 @SpringBootApplication
 public class IbmsApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(IbmsApiApplication.class, args);
-	}
+    /** Bootstraps the Spring Boot application. */
+    public static void main(String[] args) {
+        SpringApplication.run(IbmsApiApplication.class, args);
+    }
 }

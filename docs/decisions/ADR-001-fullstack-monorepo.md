@@ -51,20 +51,21 @@ The decision is explicitly scoped to the MVP phase. When the frontend matures an
 
 ## Consequences
 
-**Positive**
+### **Positive**
 
 - Atomic commits across API and frontend
 - Single repository for portfolio visibility
 - Full commit history preserved from `ibms-api` inception
 - Simplified local development setup
 
-**Negative**
+### **Negative**
 
 - CI/CD pipelines require path filtering to avoid unnecessary builds (e.g., API pipeline should not trigger on frontend-only changes)
 - Future repository split will require `git filter-repo` or subtree operations
 
 **Migration trigger**
-Split into separate repositories when any of the following conditions are met:
+
+> Split into separate repositories when any of the following conditions are met:
 
 - API and frontend require independent deployment cadences
 - Team size grows beyond 2-3 developers
