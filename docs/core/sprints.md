@@ -36,7 +36,7 @@
 - [x] **S1-01 — User entity and repository**
       Create the `User` JPA entity with fields `id`, `email`, `password` (BCrypt), `role`, `createdAt`, `updatedAt`. Implement `UserRepository` extending `JpaRepository`. Write unit tests for repository layer.
 
-- [ ] **S1-02 — JWT token service**
+- [x] **S1-02 — JWT token service**
       Implement `JwtTokenService` responsible for token generation, parsing, and validation. Token claims must include `sub` (user ID), `email`, `role`, and `exp`. Externalize secret and expiration via `application.yml` environment variables.
 
 - [ ] **S1-03 — JWT filter and security chain**
