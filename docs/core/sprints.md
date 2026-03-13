@@ -45,7 +45,7 @@
 - [x] **S1-04 — Login endpoint**
       Implement `POST /api/v1/auth/login` accepting `{ email, password }`. Returns `{ accessToken, refreshToken, expiresIn }`. Write integration test using `@SpringBootTest` and `MockMvc`.
 
-- [ ] **S1-05 — Refresh token endpoint**
+- [x] **S1-05 — Refresh token endpoint**
       Implement `POST /api/v1/auth/refresh` accepting `{ refreshToken }`. Returns new `accessToken`. Persist refresh tokens in Redis with TTL.
 
 - [ ] **S1-06 — Logout endpoint**
