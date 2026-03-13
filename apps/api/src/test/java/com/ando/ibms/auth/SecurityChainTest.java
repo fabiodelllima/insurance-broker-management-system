@@ -25,7 +25,7 @@ import java.util.UUID;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(TestcontainersConfig.class)
+@Import({TestcontainersConfig.class, com.ando.ibms.InMemoryRefreshTokenStore.class})
 class SecurityChainTest {
 
     @Autowired private MockMvc mockMvc;

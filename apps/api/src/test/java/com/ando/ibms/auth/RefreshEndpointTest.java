@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(TestcontainersConfig.class)
+@Import({TestcontainersConfig.class, com.ando.ibms.InMemoryRefreshTokenStore.class})
 class RefreshEndpointTest {
 
     @Autowired private MockMvc mockMvc;

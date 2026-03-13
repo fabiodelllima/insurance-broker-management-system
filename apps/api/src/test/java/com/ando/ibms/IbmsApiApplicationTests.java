@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @SpringBootTest
 @ActiveProfiles("test")
-@Import(TestcontainersConfig.class)
+@Import({TestcontainersConfig.class, com.ando.ibms.InMemoryRefreshTokenStore.class})
 class IbmsApiApplicationTests {
 
     @Test

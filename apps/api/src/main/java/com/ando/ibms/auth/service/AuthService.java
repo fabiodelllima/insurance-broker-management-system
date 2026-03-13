@@ -12,7 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
-/** Orchestrates authentication workflows: credential-based login and token refresh. */
+/** Orchestrates authentication workflows: credential-based login, token refresh, and logout. */
 @Service
 public class AuthService {
 
@@ -20,17 +20,20 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtTokenService jwtTokenService;
     private final JwtProperties jwtProperties;
+    private final RefreshTokenStore refreshTokenStore;
 
     /** Creates the service with its required collaborators. */
     public AuthService(
             AuthenticationManager authenticationManager,
             UserRepository userRepository,
             JwtTokenService jwtTokenService,
-            JwtProperties jwtProperties) {
+            JwtProperties jwtProperties,
+            RefreshTokenStore refreshTokenStore) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.jwtTokenService = jwtTokenService;
         this.jwtProperties = jwtProperties;
+        this.refreshTokenStore = refreshTokenStore;
     }
 
     /** Authenticates by email/password and returns an access/refresh token pair. */
@@ -50,6 +53,8 @@ public class AuthService {
                 jwtTokenService.generateRefreshToken(
                         user.getId(), user.getEmail(), user.getRole().name());
 
+        refreshTokenStore.store(refreshToken, user.getId(), jwtProperties.getRefreshExpirationMs());
+
         return new AuthResponse(accessToken, refreshToken, jwtProperties.getExpirationMs());
     }
 
@@ -59,6 +64,10 @@ public class AuthService {
 
         if (!jwtTokenService.isTokenValid(token)) {
             throw new IllegalArgumentException("Invalid or expired refresh token");
+        }
+
+        if (!refreshTokenStore.exists(token)) {
+            throw new IllegalArgumentException("Refresh token has been revoked");
         }
 
         String email = jwtTokenService.extractEmail(token);
@@ -72,5 +81,14 @@ public class AuthService {
                         user.getId(), user.getEmail(), user.getRole().name());
 
         return new AuthResponse(accessToken, token, jwtProperties.getExpirationMs());
+    }
+
+    /** Invalidates a refresh token, preventing further use. */
+    public void logout(RefreshRequest request) {
+        String token = request.refreshToken();
+
+        if (jwtTokenService.isTokenValid(token)) {
+            refreshTokenStore.delete(token);
+        }
     }
 }

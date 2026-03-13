@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(TestcontainersConfig.class)
+@Import({TestcontainersConfig.class, com.ando.ibms.InMemoryRefreshTokenStore.class})
 class LoginEndpointTest {
 
     @Autowired private MockMvc mockMvc;
