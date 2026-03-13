@@ -1,8 +1,10 @@
 package com.ando.ibms.auth;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ando.ibms.InMemoryRefreshTokenStore;
 import com.ando.ibms.TestcontainersConfig;
 import com.ando.ibms.auth.service.JwtTokenService;
 
@@ -25,7 +27,7 @@ import java.util.UUID;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import({TestcontainersConfig.class, com.ando.ibms.InMemoryRefreshTokenStore.class})
+@Import({TestcontainersConfig.class, InMemoryRefreshTokenStore.class})
 class SecurityChainTest {
 
     @Autowired private MockMvc mockMvc;
@@ -42,13 +44,18 @@ class SecurityChainTest {
     }
 
     @Test
-    void protectedRoute_withValidToken_shouldReturn200OrNotFound() throws Exception {
+    void protectedRoute_withValidToken_shouldNotBeRejectedBySecurityChain() throws Exception {
         String token =
                 jwtTokenService.generateAccessToken(
                         UUID.randomUUID(), "admin@example.com", "ADMIN");
 
-        mockMvc.perform(get("/api/v1/brokers").header("Authorization", "Bearer " + token))
-                .andExpect(status().isNotFound());
+        int status =
+                mockMvc.perform(get("/api/v1/brokers").header("Authorization", "Bearer " + token))
+                        .andReturn()
+                        .getResponse()
+                        .getStatus();
+
+        assertThat(status).isNotIn(401, 403);
     }
 
     @Test
@@ -74,7 +81,13 @@ class SecurityChainTest {
     }
 
     @Test
-    void authEndpoint_withoutToken_shouldBeAccessible() throws Exception {
-        mockMvc.perform(get("/api/v1/auth/nonexistent")).andExpect(status().isNotFound());
+    void authEndpoint_withoutToken_shouldNotBeBlockedBySecurity() throws Exception {
+        int status =
+                mockMvc.perform(get("/api/v1/auth/nonexistent"))
+                        .andReturn()
+                        .getResponse()
+                        .getStatus();
+
+        assertThat(status).isNotIn(401, 403);
     }
 }

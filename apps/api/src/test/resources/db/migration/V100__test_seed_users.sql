@@ -5,7 +5,7 @@ INSERT INTO users (id, email, password, role, created_at, updated_at)
 VALUES (
     'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
     'admin@ibms.test',
-    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
+    '$2b$10$uE7FrPHzLsobeQ/.V8KE/.g3dtCx.QYLsxMUwYIZu2.xOQ7YMco4S',
     'ADMIN',
     NOW(),
     NOW()

@@ -1,5 +1,6 @@
 package com.ando.ibms.auth.service;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +13,12 @@ import java.util.UUID;
  * <p>Each refresh token is stored as a key {@code refresh_token:{token}} with the user ID as value
  * and a TTL matching the token expiration. Deletion removes the key immediately, preventing reuse
  * after logout.
+ *
+ * <p>This bean is only created when {@link StringRedisTemplate} is available, allowing test
+ * profiles to exclude Redis and supply an in-memory alternative.
  */
 @Component
+@ConditionalOnBean(StringRedisTemplate.class)
 public class RedisRefreshTokenStore implements RefreshTokenStore {
 
     private static final String KEY_PREFIX = "refresh_token:";
