@@ -33,7 +33,7 @@
 - [x] **S1-00 — Test infrastructure enablement**
       Configure `IbmsApiApplicationTests` to use Testcontainers (PostgreSQL) so that `./mvnw verify` passes without an external database. Create `application-test.yml` profile if needed. Adjust pre-push hook to account for Docker requirement or skip integration tests locally and rely on CI.
 
-- [ ] **S1-01 — User entity and repository**
+- [x] **S1-01 — User entity and repository**
       Create the `User` JPA entity with fields `id`, `email`, `password` (BCrypt), `role`, `createdAt`, `updatedAt`. Implement `UserRepository` extending `JpaRepository`. Write unit tests for repository layer.
 
 - [ ] **S1-02 — JWT token service**
