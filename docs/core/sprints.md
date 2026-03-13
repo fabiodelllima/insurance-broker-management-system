@@ -48,7 +48,7 @@
 - [x] **S1-05 — Refresh token endpoint**
       Implement `POST /api/v1/auth/refresh` accepting `{ refreshToken }`. Returns new `accessToken`. Persist refresh tokens in Redis with TTL.
 
-- [ ] **S1-06 — Logout endpoint**
+- [x] **S1-06 — Logout endpoint**
       Implement `POST /api/v1/auth/logout`. Invalidate refresh token in Redis. Return `204 No Content`.
 
 ### Acceptance Criteria
