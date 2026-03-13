@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+/** Orchestrates authentication workflows: credential-based login and token refresh. */
 @Service
 public class AuthService {
 
@@ -20,6 +21,7 @@ public class AuthService {
     private final JwtTokenService jwtTokenService;
     private final JwtProperties jwtProperties;
 
+    /** Creates the service with its required collaborators. */
     public AuthService(
             AuthenticationManager authenticationManager,
             UserRepository userRepository,
@@ -31,6 +33,7 @@ public class AuthService {
         this.jwtProperties = jwtProperties;
     }
 
+    /** Authenticates by email/password and returns an access/refresh token pair. */
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password()));
@@ -50,6 +53,7 @@ public class AuthService {
         return new AuthResponse(accessToken, refreshToken, jwtProperties.getExpirationMs());
     }
 
+    /** Validates a refresh token and issues a new access token. */
     public AuthResponse refresh(RefreshRequest request) {
         String token = request.refreshToken();
 

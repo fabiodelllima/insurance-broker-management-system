@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/** Loads user-specific data from the database for Spring Security authentication. */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /** Creates the service with the given user repository. */
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

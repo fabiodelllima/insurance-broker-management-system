@@ -3,6 +3,7 @@ package com.ando.ibms.common.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/** Externalized JWT configuration bound from {@code security.jwt.*} properties. */
 @Component
 @ConfigurationProperties(prefix = "security.jwt")
 public class JwtProperties {
