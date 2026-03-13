@@ -53,9 +53,9 @@
 
 ### Acceptance Criteria
 
-- [ ] All endpoints return correct HTTP status codes for valid and invalid inputs
-- [ ] Invalid credentials return `401`, expired tokens return `401`, missing token returns `401`
-- [ ] Integration tests pass for all happy paths and primary error scenarios
+- [x] All endpoints return correct HTTP status codes for valid and invalid inputs
+- [x] Invalid credentials return `401`, expired tokens return `401`, missing token returns `401`
+- [x] Integration tests pass for all happy paths and primary error scenarios
 - [ ] No secrets hardcoded — all via environment variables
 
 ---
@@ -89,9 +89,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Authenticated requests only (`Authorization: Bearer <token>`)
-- [ ] Pagination defaults: `page=0`, `size=20`, sorted by `name` ASC
-- [ ] Soft delete — records are never physically removed
+- [x] Authenticated requests only (`Authorization: Bearer <token>`)
+- [x] Pagination defaults: `page=0`, `size=20`, sorted by `name` ASC
+- [x] Soft delete — records are never physically removed
 - [ ] CNPJ validation on create and update
 
 ---
@@ -127,9 +127,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Invalid status transitions return `409 Conflict` with descriptive message
-- [ ] Policy cannot be created without an existing active broker
-- [ ] All date fields use ISO 8601 format
+- [x] Invalid status transitions return `409 Conflict` with descriptive message
+- [x] Policy cannot be created without an existing active broker
+- [x] All date fields use ISO 8601 format
 
 ---
 
@@ -154,9 +154,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Quote conversion is atomic (transactional)
-- [ ] Expired quotes (`validUntil` in the past) cannot be accepted
-- [ ] Converted quotes are immutable
+- [x] Quote conversion is atomic (transactional)
+- [x] Expired quotes (`validUntil` in the past) cannot be accepted
+- [x] Converted quotes are immutable
 
 ---
 
@@ -187,9 +187,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Claims can only be opened against `ACTIVE` policies
-- [ ] `finalValue` is required when closing an approved claim
-- [ ] Document storage abstracted behind an interface for future OCI migration
+- [x] Claims can only be opened against `ACTIVE` policies
+- [x] `finalValue` is required when closing an approved claim
+- [x] Document storage abstracted behind an interface for future OCI migration
 
 ---
 
@@ -217,9 +217,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Notification failures never affect the originating transaction
-- [ ] All credentials externalized via environment variables
-- [ ] Dead letter stream inspectable via admin endpoint
+- [x] Notification failures never affect the originating transaction
+- [x] All credentials externalized via environment variables
+- [x] Dead letter stream inspectable via admin endpoint
 
 ---
 
@@ -244,9 +244,9 @@
 
 ### Acceptance Criteria
 
-- [ ] Login with valid credentials navigates to dashboard
-- [ ] Login with invalid credentials shows error message
-- [ ] Protected routes redirect unauthenticated users to login
+- [x] Login with valid credentials navigates to dashboard
+- [x] Login with invalid credentials shows error message
+- [x] Protected routes redirect unauthenticated users to login
 - [ ] Token refresh is transparent to the user
 
 ---
