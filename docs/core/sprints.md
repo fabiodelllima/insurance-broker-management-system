@@ -39,7 +39,7 @@
 - [x] **S1-02 — JWT token service**
       Implement `JwtTokenService` responsible for token generation, parsing, and validation. Token claims must include `sub` (user ID), `email`, `role`, and `exp`. Externalize secret and expiration via `application.yml` environment variables.
 
-- [ ] **S1-03 — JWT filter and security chain**
+- [x] **S1-03 — JWT filter and security chain**
       Implement `JwtAuthenticationFilter` extending `OncePerRequestFilter`. Wire it into `SecurityConfig` to validate tokens on every request. Public routes: `/actuator/health`, `/api/v1/auth/**`.
 
 - [ ] **S1-04 — Login endpoint**
