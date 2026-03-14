@@ -3,3 +3,8 @@ ibms-snapshot.tar.gz
 scripts/.tokens.tmp
 
 docs/stakeholders/
+
+# WA-POC docs (staged for later commit)
+docs/decisions/ADR-004-whatsapp-conversational-poc.md
+docs/requirements/
+docs/guides/
