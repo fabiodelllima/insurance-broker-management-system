@@ -1,7 +1,6 @@
 # IBMS — Risk Matrix and Transition Triggers
 
-- **Last updated:** 2026-03-13
-- **Scope:** OCI Free Tier operation during POC and MVP
+**Scope:** OCI Free Tier operation during POC and MVP
 
 ---
 
@@ -42,6 +41,21 @@ These metrics confirm the infrastructure is performing within acceptable bounds.
 | Hidden costs (egress, API calls)      | Low (15%)    | Low    | Billing monitoring, alerts on any non-zero charge       |
 | Free Tier insufficient before revenue | Low (20%)    | Medium | Budget reassessment, cost-benefit analysis              |
 | WhatsApp API costs exceed projection  | Very Low     | Low    | Volume is <500 msg/month; even 10x growth is under $100 |
+
+---
+
+## WhatsApp Integration Risks
+
+| Risk                                        | Probability   | Impact | Mitigation                                               |
+| ------------------------------------------- | ------------- | ------ | -------------------------------------------------------- |
+| Meta Business Account verification delay    | Medium (25%)  | Medium | Start process early; sandbox works without verification  |
+| Template approval rejected by Meta          | Low (15%)     | Low    | Follow official guidelines; re-submit with adjustments   |
+| Webhook endpoint unreachable (ngrok/tunnel) | Medium (30%)  | Low    | Document fallback setup; deploy to OCI for stable URL    |
+| Meta API rate limiting                      | Very Low (5%) | Low    | POC volume far below limits; implement backoff if needed |
+| Conversation state lost on app restart      | Certain       | Low    | Known POC limitation; Redis-backed store in Sprint 6     |
+| WhatsApp number banned                      | Very Low (5%) | High   | Strictly transactional messages; follow Meta policies    |
+| Meta deprecates sandbox features            | Very Low      | Medium | Sandbox is established tooling; unlikely in short term   |
+| Webhook HMAC bypass attempt                 | Low (10%)     | High   | Validate signature on every request; reject unsigned     |
 
 ---
 
@@ -99,3 +113,7 @@ Reassess cloud provider choice when any of the following conditions are met:
 - Availability: 99% (24x7)
 
 Run benchmarks before each phase transition. Tools: k6, Gatling, or Apache JMeter.
+
+---
+
+- **Last updated:** 2026-03-14
