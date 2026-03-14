@@ -1,6 +1,5 @@
 # IBMS — Project Roadmap
 
-- **Last updated:** 2026-03-13
 - **Current phase:** MVP
 - **Repository:** insurance-broker-management-system
 
@@ -16,11 +15,23 @@ Infrastructure work depends on OCI account creation. Until then, all development
 
 ## Application Track
 
-### Phase 1 — Backend Core (Sprints 1–4)
+### Phase 0 — Foundation (Sprint 1)
+
+Auth establishes the security foundation. No other module can be properly tested end-to-end without working JWT issuance and validation.
+
+- [x] Sprint 1 — `auth`: JWT issuance, login, refresh, logout, token validation filter
+
+### Phase 0.5 — WhatsApp POC (Sprint WA-POC)
+
+Inserted ahead of the backend core modules to demonstrate tangible system value to stakeholders. The financier requires evidence that the system solves a real workflow problem before committing further investment. A conversational claim intake via WhatsApp — replacing the manual process brokers perform daily — provides that evidence.
+
+This sprint builds a vertical slice: Meta Cloud API integration, conversation engine, and a simplified claim entity. The code is structured to evolve into Sprints 5 (Claim) and 6 (Notifications) without rewrite. See ADR-004 for full rationale.
+
+- [ ] Sprint WA-POC — WhatsApp claim intake: Meta Cloud API, conversation engine, claim persistence
+
+### Phase 1 — Backend Core (Sprints 2–4)
 
 The backend is developed module by module, following the domain structure already established in `apps/api/`. Each module ships with unit and integration tests before the next begins.
-
-**Auth** establishes the security foundation. No other module can be properly tested end-to-end without working JWT issuance and validation. This is the entry point.
 
 **Broker** is the central aggregate of the system — every policy, quote, and claim belongs to a broker. It must exist before the downstream modules can reference it.
 
@@ -28,19 +39,18 @@ The backend is developed module by module, following the domain structure alread
 
 **Quote** feeds into policy creation. A quote is the starting point of the sales workflow and must integrate with both broker and policy modules.
 
-- [ ] Sprint 1 — `auth`: JWT issuance, login endpoint, refresh token, token validation filter
 - [ ] Sprint 2 — `broker`: Broker CRUD, pagination, search, integration tests
 - [ ] Sprint 3 — `policy`: Policy lifecycle, status transitions, domain events
 - [ ] Sprint 4 — `quote`: Quote generation, status workflow, policy conversion
 
 ### Phase 2 — Backend Extended (Sprints 5–6)
 
-**Claim** closes the policy lifecycle loop, handling the intake and tracking of insurance claims. It is the most operationally complex module, with its own status machine and document requirements.
+**Claim** builds on the foundation established in WA-POC — the simplified entity gains a proper Policy FK, document attachments, status machine, and REST endpoints.
 
-**Notifications** is a cross-cutting concern — email and WhatsApp messaging triggered by domain events from policy, quote, and claim modules. It is implemented last to avoid coupling with unstable domain models.
+**Notifications** absorbs the WhatsApp client from WA-POC into the full notification pipeline: Redis Streams, domain event routing, email channel, Resilience4j circuit breakers, and dead letter handling.
 
-- [ ] Sprint 5 — `claim`: Claim intake, status machine, document attachment
-- [ ] Sprint 6 — `notification`: Email (SMTP), WhatsApp integration, async processing via Redis Streams
+- [ ] Sprint 5 — `claim`: Full claim entity, status machine, document attachment, REST API
+- [ ] Sprint 6 — `notification`: Email (SMTP), WhatsApp promotion to NotificationChannel, async processing via Redis Streams
 
 ### Phase 3 — Frontend (Sprints 7–10)
 
@@ -81,6 +91,26 @@ Infrastructure work is gated on OCI account creation. Local development uses Doc
 
 ---
 
+## Timeline Overview
+
+```plaintext
+Sprint 1 (Auth)         ████████████████  2026-03-11 → 2026-03-24  [COMPLETE]
+Sprint WA-POC           ░░░░░░░░░░░░░░░░  2026-03-25 → 2026-04-07  ← current
+Sprint 2 (Broker)       ░░░░░░░░░░░░░░░░  2026-04-08 → 2026-04-21
+Sprint 3 (Policy)       ░░░░░░░░░░░░░░░░  2026-04-22 → 2026-05-05
+Sprint 4 (Quote)        ░░░░░░░░░░░░░░░░  2026-05-06 → 2026-05-19
+Sprint 5 (Claim)        ░░░░░░░░░░░░░░░░  2026-05-20 → 2026-06-02
+Sprint 6 (Notification) ░░░░░░░░░░░░░░░░  2026-06-03 → 2026-06-16
+Sprint 7 (Angular)      ░░░░░░░░░░░░░░░░  2026-06-17 → 2026-06-30
+Sprint 8 (Broker UI)    ░░░░░░░░░░░░░░░░  2026-07-01 → 2026-07-14
+Sprint 9 (Claim UI)     ░░░░░░░░░░░░░░░░  2026-07-15 → 2026-07-28
+Sprint 10 (Dashboard)   ░░░░░░░░░░░░░░░░  2026-07-29 → 2026-08-11
+```
+
+Inserting WA-POC shifts all subsequent sprints by 2 weeks. Total project timeline extends from ~20 weeks to ~22 weeks. The trade-off is justified by early stakeholder validation (see ADR-004).
+
+---
+
 ## Migration Triggers
 
 This monorepo will be split into separate repositories when any of the following conditions are met:
@@ -89,4 +119,8 @@ This monorepo will be split into separate repositories when any of the following
 - Team grows beyond 2–3 developers
 - Component-level access control becomes necessary
 
-See [ADR-001](adr/ADR-001-fullstack-monorepo.md) for full rationale.
+See [ADR-001](../decisions/ADR-001-fullstack-monorepo.md) for full rationale.
+
+---
+
+- **Last updated:** 2026-03-14
